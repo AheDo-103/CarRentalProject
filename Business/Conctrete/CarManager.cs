@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Conctrete;
@@ -42,9 +43,9 @@ namespace Business.Conctrete
             return new SuccessDataResult<Car>(_carDal.Get(x => x.CarId == entityId), Messages.CarGetted);
         }
 
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car entity)
         {
-            ValidationTool.Validate(new CarValidator(), entity);
             _carDal.Add(entity);
             return new SuccessResult(Messages.CarAdded);
         }
