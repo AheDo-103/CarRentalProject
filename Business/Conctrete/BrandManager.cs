@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Conctrete;
@@ -31,16 +32,16 @@ namespace Business.Conctrete
             return new SuccessDataResult<Brand>(_brandDal.Get(x => x.BrandId == entityId), Messages.BrandGetted);
         }
 
+        [ValidationAspect(typeof(BrandValidator))]
         public IResult Add(Brand entity)
         {
-            ValidationTool.Validate(new BrandValidator(), entity);
             _brandDal.Add(entity);
             return new SuccessResult(Messages.BrandAdded);
         }
 
+        [ValidationAspect(typeof(BrandValidator))]
         public IResult Update(Brand entity)
         {
-            ValidationTool.Validate(new BrandValidator(), entity);
             _brandDal.Update(entity);
             return new SuccessResult(Messages.BrandUpdated);
         }

@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Conctrete;
@@ -45,16 +46,16 @@ namespace Business.Conctrete
                 Messages.CustomerGetted);
         }
 
+        [ValidationAspect(typeof(CustomerValidator))]
         public IResult Add(Customer entity)
         {
-            ValidationTool.Validate(new CustomerValidator(), entity);
             _customerDal.Add(entity);
             return new SuccessResult(Messages.CustomerAdded);
         }
 
+        [ValidationAspect(typeof(CustomerValidator))]
         public IResult Update(Customer entity)
         {
-            ValidationTool.Validate(new CustomerValidator(), entity);
             _customerDal.Update(entity);
             return new SuccessResult(Messages.CustomerUpdated);
         }

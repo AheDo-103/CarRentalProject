@@ -50,9 +50,9 @@ namespace Business.Conctrete
             return new SuccessResult(Messages.CarAdded);
         }
 
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Update(Car entity)
         {
-            ValidationTool.Validate(new CarValidator(), entity);
             _carDal.Update(entity);
             return new SuccessResult(Messages.CarUpdated);
         }

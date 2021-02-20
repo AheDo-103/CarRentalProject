@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results.Abstract;
 using Core.Utilities.Results.Conctrete;
@@ -42,16 +43,16 @@ namespace Business.Conctrete
             return new SuccessDataResult<Rental>(_rentalDal.Get(x => x.RentalId == entityId), Messages.RentalGetted);
         }
 
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental entity)
         {
-            ValidationTool.Validate(new RentalValidator(), entity);
             _rentalDal.Add(entity);
             return new SuccessResult(Messages.RentalAdded);
         }
 
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult Update(Rental entity)
         {
-            ValidationTool.Validate(new RentalValidator(), entity);
             _rentalDal.Update(entity);
             return new SuccessResult(Messages.RentalUpdated);
         }
